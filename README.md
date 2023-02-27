@@ -1,2 +1,2 @@
 # day-planner-backend
-Backend application for day planer aplication.
+Backend application for day planner aplication.
