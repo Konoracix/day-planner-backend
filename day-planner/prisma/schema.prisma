@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  mail       String
+  name       String
+  password   String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  deleted_at DateTime?
+  Subject    Subject[]
+  Task       Task[]
+  Book       Book[]
+  Homework   Homework[]
+  Lesson     Lesson[]
+}
+
+model Subject {
+  id         Int        @id @default(autoincrement())
+  user       User       @relation(fields: [user_id], references: [id])
+  user_id    Int
+  name       String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  deleted_at DateTime?
+  Book       Book[]
+  Homework   Homework[]
+  Lesson     Lesson[]
+}
+
+model Task {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [user_id], references: [id])
+  user_id    Int
+  name       String
+  date_from  DateTime
+  date_to    DateTime
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model Book {
+  id         Int       @id @default(autoincrement())
+  subject    Subject   @relation(fields: [subject_id], references: [id])
+  subject_id Int
+  user       User      @relation(fields: [user_id], references: [id])
+  user_id    Int
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model Homework {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  subject     Subject   @relation(fields: [subject_id], references: [id])
+  subject_id  Int
+  name        String
+  date_from   DateTime
+  date_to     DateTime
+  book_needed Boolean
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+}
+
+model Lesson {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [user_id], references: [id])
+  user_id    Int
+  subject    Subject   @relation(fields: [subject_id], references: [id])
+  subject_id Int
+  name       String
+  date_from  DateTime
+  date_to    DateTime
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
